@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Template orgulhosamente criado por (Shell-Base)
+
+#-----------HEADER-------------------------------------------------------------|
+# AUTOR             : Vovolinux <suporte@vovolinux.com.br>
+# HOMEPAGE          : https://vovolinux.com.br 
+# DATA DE CRIAÇÃO   : 25/04/2020 às 17:37 
+# PROGRAMA          : InfoSo
+# VERSÃO            : 1.0.0
+# LICENÇA           : MIT
+# PEQUENA DESCRIÇÃO : Informações sobre o sistema operacional
+#
+# CHANGELOG :
+#
+#------------------------------------------------------------------------------|
+
+
+#----------------------------------- FUNÇÕES ---------------------------------->
+
+# Obtém o nome da distro
+get_distro()
+{
+    # Compatibilidade os-release <-> lsb-release
+    if ! [[ -e /etc/${release} ]]; then
+        release='lsb-release'
+        linha='CODENAME'
+    fi    
+
+    return $(cat /etc/"${release}" | grep "${linha}" | cut -d"\"" -f2)
+}
+
+#--------------------------------- FIM-FUNÇÕES --------------------------------<
