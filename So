@@ -17,8 +17,6 @@
 
 #--------------------------------- VARIÁVEIS ---------------------------------->
 
-# Array de opções para busca em 'array_contem()'
-array=()
 
 #------------------------------- FIM-VARIÁVEIS --------------------------------<
 
@@ -29,7 +27,7 @@ array=()
 somente_root()
 {
     # é root?
-    [[ $UID -ne 0 ]] && {  
+    [[ ${UID} -ne 0 ]] && {  
         printf %b "Execute como r00t.\n"
         exit 1
     }
@@ -48,20 +46,6 @@ get_distro()
     fi    
 
     printf %b "$(cat /etc/"${release}" | grep "${linha}" | cut -d"\"" -f2)"
-}
-
-
-# Exibe uma pergunta passada por parâmetro
-# $1 = frase
-# Retorno: 0-Respondeu Sim; 1-Respondeu Não
-pergunta_sn()
-{
-        read -ep ">> $1: " -n 1
-        case "$REPLY" in
-            s|S) printf %b "\n" && return 0 ;;
-            *) return 1  ;;
-        esac
-    } 
 }
 
 # Encerra o script se não encontrar pelo menos uma ocorrência com 
@@ -93,5 +77,6 @@ EOF
     exit 1
     fi
 }
+
 
 #--------------------------------- FIM-FUNÇÕES --------------------------------<

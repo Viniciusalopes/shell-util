@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Template orgulhosamente criado por (Shell-Base)
+
+#-----------HEADER-------------------------------------------------------------|
+# AUTOR             : Vovolinux <suporte@vovolinux.com.br>
+# HOMEPAGE          : https://vovolinux.com.br 
+# DATA DE CRIAÇÃO   : 26/04/2020 às 14:04 
+# PROGRAMA          : Menu
+# VERSÃO            : 1.0.0
+# LICENÇA           : MIT - © 2020 - Vovolinux
+# PEQUENA DESCRIÇÃO : Menus com opções
+#
+# CHANGELOG :
+#
+#------------------------------------------------------------------------------|
+
+#--------------------------------- VARIÁVEIS ---------------------------------->
+#------------------------------- FIM-VARIÁVEIS --------------------------------<
+
+#----------------------------------- FUNÇÕES ---------------------------------->
+
+# Exibe uma pergunta passada por parâmetro
+# $1 = frase da pergunta
+# Retorno: 0-Respondeu Sim; 1-Respondeu Não ou não respondeu
+pergunta_sn()
+{
+    read -ep "$1: " -n 1
+    printf %b "\n"
+    case "$REPLY" in
+        s|S) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+#--------------------------------- FIM-FUNÇÕES --------------------------------<
