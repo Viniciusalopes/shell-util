@@ -5,10 +5,10 @@
 # AUTOR             : Vovolinux <suporte@vovolinux.com.br>
 # HOMEPAGE          : https://vovolinux.com.br 
 # DATA DE CRIAÇÃO   : 25/04/2020 às 17:37 
-# PROGRAMA          : InfoSo
+# PROGRAMA          : So
 # VERSÃO            : 1.0.0
 # LICENÇA           : MIT
-# PEQUENA DESCRIÇÃO : Informações sobre o sistema operacional
+# PEQUENA DESCRIÇÃO : Informações sobre o sistema operacional e afins
 #
 # CHANGELOG :
 #
@@ -17,8 +17,8 @@
 
 #--------------------------------- VARIÁVEIS ---------------------------------->
 
-# Array de distribuições para verificação no método 'verifica_distro()'
-distros=()
+# Array de opções para busca em 'array_contem()'
+array=()
 
 #------------------------------- FIM-VARIÁVEIS --------------------------------<
 
@@ -50,28 +50,16 @@ get_distro()
     printf %b "$(cat /etc/"${release}" | grep "${linha}" | cut -d"\"" -f2)"
 }
 
-# Verifica se o script já foi testado na distro atual
-verifica_distro()
+
+# Exibe uma pergunta passada por parâmetro
+# $1 = frase
+# Retorno: 0-Respondeu Sim; 1-Respondeu Não
+pergunta_sn()
 {
-    # Flag para continuar o script
-    local continua=0
-    
-    # Distro atual
-    local distro=$(get_distro)
-
-    for d in "${distros[@]}"; do
-        if [[ "${d}" == ${distro} ]]; then
-            continua=1
-        fi
-    done
-
-    [[ $continua -eq 0 ]] && { 
-        printf %b ">> Este script ainda não foi testado com ${distro}.\n";
-        
-        read -ep ">> Prosseguir com a instalação mesmo assim? [s/N]: " -n 1
+        read -ep ">> $1: " -n 1
         case "$REPLY" in
             s|S) printf %b "\n" && return 0 ;;
-            *) exit 1  ;;
+            *) return 1  ;;
         esac
     } 
 }
@@ -93,6 +81,7 @@ require()
             fi
             exit 1
         else
+            # Exibe a lista de arquivos encontrados com o nome
             ls ${2}
         fi
     else
@@ -101,6 +90,7 @@ require()
 >> Opções: require [caminho] [arquivo]
            require [caminho] [arquivo] [link para download]
 EOF
+    exit 1
     fi
 }
 
