@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+# Template orgulhosamente criado por (Shell-Base)
+
+#-----------HEADER-------------------------------------------------------------|
+# AUTOR             : Vovolinux <suporte@vovolinux.com.br>
+# HOMEPAGE          : https://vovolinux.com.br 
+# DATA DE CRIAÇÃO   : 26/04/2020 às 09:58 
+# PROGRAMA          : Texto
+# VERSÃO            : 1.0.0
+# LICENÇA           : MIT - © 2020 - Vovolinux
+# PEQUENA DESCRIÇÃO : Operações com textos e strings
+#
+# CHANGELOG :
+#
+#------------------------------------------------------------------------------|
+
+#--------------------------------- VARIÁVEIS ---------------------------------->
+
+#------------------------------- FIM-VARIÁVEIS --------------------------------<
+
+#----------------------------------- FUNÇÕES ---------------------------------->
+
+# Repete um caractere N vezes
+# $1 = caractere a ser repetido
+# $2 = quantidade de repetições
+repete()
+{
+    for i in $(seq 1 $2); do
+        printf %b "$1"
+    done
+}
+
+# Imprime uma linha de separação na tela
+# $1 = caractere do separador
+# $2 = quantidade de colunas
+separa()
+{   repete "$1" $2
+    printf %b "\n"
+}
+
+# Verifica se o array contém o texto procurado
+# $array() deve ser declarado antes pelo chamador, de forma global
+# $1 = Texto procurado
+# $2 = Frase para não encontrado
+# Retorno: 0 = encontrou; 1 = não econtrou
+array_contem()
+{
+    # Flag para continuar o script
+    for a in "${array[@]}"; do
+        if [[ "${a}" == "$1" ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+#--------------------------------- FIM-FUNÇÕES --------------------------------<
+
+
+
+#---------------------------------- TESTES ------------------------------------>
+
+
+#--------------------------------- FIM-TESTES ---------------------------------<
+
+# Programa começa aqui :)
+
