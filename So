@@ -105,7 +105,7 @@ get_sources()
             wget -v $2/$dep -O "$1/$dep"
         fi
         # Inclui a dependência no chamador
-        printf %b "Incluindo dependencia [${dep}]...\n"
+        printf %b "Incluindo dependencia [$1/$dep]...\n"
         source "$1/$dep"
     done
 }
