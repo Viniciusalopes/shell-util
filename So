@@ -107,6 +107,7 @@ get_sources()
         # Inclui a dependência no chamador
         printf %b "Incluindo dependencia [$1/$dep]...\n"
         source "$1/$dep"
+        printf %b "OK\n\n"
     done
 }
 #--------------------------------- FIM-FUNÇÕES --------------------------------<
