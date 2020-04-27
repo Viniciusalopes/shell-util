@@ -81,6 +81,13 @@ date_format(){
 # $2 = quantidade de colunas
 # $3 = Título principal
 # $4 = Subtítulo
+# Exemplo:
+#   cabecalho "-" 80 "TÍTULO" "Subtitulo"
+# Saída:
+#   --------------------------------------------------------------------------------
+#   TÍTULO
+#   Subtitulo
+#   --------------------------------------------------------------------------------
 cabecalho()
 {
     cat << EOF
