@@ -63,11 +63,13 @@ verifica_distro()
     # Se sim, insere a dependencia
     # Se não, encerra o chamador
     if [[ "$1" = "" ]]; then
-        printf %b "verifica_distro: Dependência não encontrada: 'shell-util/menu'"
+        printf %b "verifica_distro: Dependência não encontrada: 'shell-util/menu'\n"
         exit 1
     else
+        printf %n "dep -> $1\n"
         source "$1"
     fi
+    
     # Flag para continuar ou interromper o programa
     # 0 = sim
     # 1 = não
@@ -134,7 +136,7 @@ get_sources()
     if ! [[ -d $1 ]]; then
         mkdir -v "$1"
     fi
-
+    
     # Download das dependências
     for dep in "${sources[@]}"; do
         printf %b "> $1/$dep -> "
