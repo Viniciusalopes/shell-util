@@ -5,7 +5,7 @@
 # AUTOR             : Vovolinux <suporte@vovolinux.com.br>
 # HOMEPAGE          : https://vovolinux.com.br 
 # DATA DE CRIAÇÃO   : 26/04/2020 às 14:04 
-# PROGRAMA          : Menu
+# PROGRAMA          : menu
 # VERSÃO            : 1.0.0
 # LICENÇA           : MIT - © 2020 - Vovolinux
 # PEQUENA DESCRIÇÃO : Menus com opções
@@ -21,7 +21,9 @@
 
 # Exibe uma pergunta passada por parâmetro
 # $1 = frase da pergunta
-# Retorno: 0-Respondeu Sim; 1-Respondeu Não ou não respondeu
+# Retorno: 
+#   0-Respondeu Sim;
+#   1-Respondeu Não ou não respondeu.
 pergunta_sn()
 {
     read -ep "$1: " -n 1

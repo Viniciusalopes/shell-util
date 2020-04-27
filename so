@@ -5,7 +5,7 @@
 # AUTOR             : Vovolinux <suporte@vovolinux.com.br>
 # HOMEPAGE          : https://vovolinux.com.br 
 # DATA DE CRIAÇÃO   : 25/04/2020 às 17:37 
-# PROGRAMA          : So
+# PROGRAMA          : so
 # VERSÃO            : 1.0.0
 # LICENÇA           : MIT
 # PEQUENA DESCRIÇÃO : Informações sobre o sistema operacional e afins
@@ -53,31 +53,41 @@ get_distro()
 
 # Verifica se o script já foi testado na distro atual.
 # $distros() deve ser declarado antes pelo chamador, de forma global
+# $1 = Local da dependencia shell-util/menu
 # $REPLY=sS, continua.
 # $REPLY=nN ou inválido, encerra o chamador.
+
 verifica_distro()
 {
-    # Flag para continuar o programa
-    local continua=0
+    # Verifica se o local da dependência shell-util/menu foi passado por argumento
+    # Se sim, insere a dependencia
+    # Se não, encerra o chamador
+    if [[ "$1" = "" ]]; then
+        printf %b "verifica_distro: Dependência não encontrada: 'shell-util/menu'"
+        exit 1
+    else
+        source "$1"
+    fi
+    # Flag para continuar ou interromper o programa
+    # 0 = sim
+    # 1 = não
+    local encontrado=1
     
     # Distro atual
     local distro=$(get_distro)
 
     for d in "${distros[@]}"; do
         if [[ "${d}" == ${distro} ]]; then
-            continua=1
+            encontrado=0
         fi
     done
 
-    [[ $continua -eq 0 ]] && { 
+    if [[ $encontrado -eq 1 ]]; then
         printf %b ">> Este programa ainda não foi testado com ${distro}.\n";
-        
-        read -ep ">> Deseja continuar mesmo assim? [s/N]: " -n 1
-        case "$REPLY" in
-            s|S) printf %b "\n" && return 0 ;;
-            *) exit 1  ;;
-        esac
-    } 
+        if ! pergunta_sn "Deseja continuar mesmo assim? [s/N]"; then
+            exit 1
+        fi
+    fi
 }
 
 # Encerra o script se não encontrar pelo menos uma ocorrência com 
@@ -115,6 +125,7 @@ EOF
 # $sources() deve ser declarado antes pelo chamador, de forma global
 # $1 = Diretório para dependências
 # $2 = Caminho para download das dependências
+
 get_sources()
 {
     printf %b "Verificando dependências...\n"
