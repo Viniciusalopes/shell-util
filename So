@@ -97,7 +97,7 @@ get_sources()
 
     # Download das dependências
     for dep in "${sources[@]}"; do
-        printf %b "> $1/$dep..."
+        printf %b "> $1/$dep -> "
         if [[ -f "$1/$dep" ]]; then
             printf %b "OK\n"
         else
@@ -105,9 +105,8 @@ get_sources()
             wget -v $2/$dep -O "$1/$dep"
         fi
         # Inclui a dependência no chamador
-        printf %b "Incluindo dependencia [$1/$dep]...\n"
         source "$1/$dep"
-        printf %b "OK\n\n"
+        printf %b "\n\n"
     done
 }
 #--------------------------------- FIM-FUNÇÕES --------------------------------<
