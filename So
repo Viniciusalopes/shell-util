@@ -39,13 +39,13 @@ somente_root()
 # Obtém o nome da distro
 get_distro()
 {
-    release='os-release'
-    linha='PRETTY'
+    local release='os-release'
+    local linha='PRETTY'
     
     # Compatibilidade os-release <-> lsb-release
     if ! [[ -e /etc/${release} ]]; then
-        release='lsb-release'
-        linha='CODENAME'
+        local release='lsb-release'
+        local linha='CODENAME'
     fi    
 
     printf %b "$(cat /etc/"${release}" | grep "${linha}" | cut -d"\"" -f2)"
@@ -97,7 +97,11 @@ get_sources()
 
     # Download das dependências
     for dep in "${sources[@]}"; do
-        if ! [[ -f "$1/$dep" ]]; then
+        printf %b "${dep}..."
+        if [[ -f "$1/$dep" ]]; then
+            printf %b "OK\n"
+        else
+            printf %b "Não encontrada.\n"
             wget -v $2/$dep -O "$1/$dep"
         fi
         # Inclui a dependência no chamador
