@@ -83,7 +83,7 @@ date_format(){
 # $3 = Título principal
 # $4 = Subtítulo
 # Exemplo:
-#   cabecalho "-" 80 "TÍTULO" "Subtitulo"
+#   printf %b $(cabecalho "-" 80 "TÍTULO" "Subtitulo")
 # Saída:
 #   --------------------------------------------------------------------------------
 #   TÍTULO
