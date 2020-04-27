@@ -76,4 +76,19 @@ date_format(){
 
 }
 
+# Imprime um cabeçalho
+# $1 = caractere do separador
+# $2 = quantidade de colunas
+# $3 = Título principal
+# $4 = Subtítulo
+cabecalho()
+{
+    cat << EOF
+$(separa $1 $2)
+$3
+$4
+$(separa $1 $2)
+EOF    
+}
+
 #--------------------------------- FIM-FUNÇÕES --------------------------------<
