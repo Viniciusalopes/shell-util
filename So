@@ -97,7 +97,7 @@ get_sources()
 
     # Download das dependências
     for dep in "${sources[@]}"; do
-        printf %b "${dep}..."
+        printf %b "> $1/$dep..."
         if [[ -f "$1/$dep" ]]; then
             printf %b "OK\n"
         else
