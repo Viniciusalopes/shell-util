@@ -51,6 +51,35 @@ get_distro()
     printf %b "$(cat /etc/"${release}" | grep "${linha}" | cut -d"\"" -f2)"
 }
 
+# Verifica se o script já foi testado na distro atual.
+# $distros() deve ser declarado antes pelo chamador, de forma global
+# $REPLY=sS, continua.
+# $REPLY=nN ou inválido, encerra o chamador.
+verifica_distro()
+{
+    # Flag para continuar o programa
+    local continua=0
+    
+    # Distro atual
+    local distro=$(get_distro)
+
+    for d in "${distros[@]}"; do
+        if [[ "${d}" == ${distro} ]]; then
+            continua=1
+        fi
+    done
+
+    [[ $continua -eq 0 ]] && { 
+        printf %b ">> Este programa ainda não foi testado com ${distro}.\n";
+        
+        read -ep ">> Deseja continuar mesmo assim? [s/N]: " -n 1
+        case "$REPLY" in
+            s|S) printf %b "\n" && return 0 ;;
+            *) exit 1  ;;
+        esac
+    } 
+}
+
 # Encerra o script se não encontrar pelo menos uma ocorrência com 
 # o nome do arquivo no diretório e exibe link para download.
 # $1 = diretório
