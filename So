@@ -17,6 +17,9 @@
 
 #--------------------------------- VARIÁVEIS ---------------------------------->
 
+# Dependências e scripts auxiliares, para a função 'get_sources()'
+# $sources() deve ser declarado antes pelo chamador, de forma global
+sources=()
 
 #------------------------------- FIM-VARIÁVEIS --------------------------------<
 
@@ -78,5 +81,27 @@ EOF
     fi
 }
 
+# Verifica dependências e faz o download caso não existam
+# Em seguida inclui a dependência no script atual com o 'source "$dep"'
+# $sources() deve ser declarado antes pelo chamador, de forma global
+# $1 = Diretório para dependências
+# $2 = Caminho para download das dependências
+get_sources()
+{
+    printf %b "Verificando dependências...\n"
 
+    # Cria o diretório para dependências
+    if ! [[ -d $1 ]]; then
+        mkdir -v "$1"
+    fi
+
+    # Download das dependências
+    for dep in "${sources[@]}"; do
+        if ! [[ -f "$1/$dep" ]]; then
+            wget -v $2/$dep -O "$1/$dep"
+        fi
+        # Inclui a dependência no chamador
+        source "$1/$dep"
+    done
+}
 #--------------------------------- FIM-FUNÇÕES --------------------------------<
