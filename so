@@ -106,10 +106,11 @@ require()
                 printf %b ">> Faça o download em:\n   ${3}\n"
                 printf %b ">> e salve o arquivo no diretório:\n   '${1}/'.\n"
             fi
-            return 1
+            exit 1
         else
             # Exibe a lista de arquivos encontrados com o nome
             ls $2
+            exit 0
         fi
     else
         cat << EOF
@@ -117,7 +118,7 @@ require()
 >> Opções: require [caminho] [arquivo]
            require [caminho] [arquivo] [link para download]
 EOF
-    return 1
+    exit 1
     fi
 }
 
