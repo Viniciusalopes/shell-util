@@ -64,16 +64,17 @@ array_contem()
 # $1 = Formato para a saída da data
 date_format(){
     case $1 in
-        "ddmmYYYY")
-            printf %b "$(date + "%d%m%Y")";;
+        "Y")
+            printf %b "$(date "+%Y")";;
+        "dmY")
+            printf %b "$(date "+%d%m%Y")";;
         "Ymd_HMS")
-            printf %b "$(date + "+%Y%m%d_%H%M%S")";;
+            printf %b "$(date "+%Y%m%d_%H%M%S")";;
         "Y-m-d_H:M:S")
-            printf %b "$(date + "+%Y%m%d_%H%M%S")";;
+            printf %b "$(date "+%Y%m%d_%H%M%S")";;
         
         *) printf %b "$(date)"
     esac
-
 }
 
 # Imprime um cabeçalho
