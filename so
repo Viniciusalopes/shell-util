@@ -147,6 +147,11 @@ get_sources()
         else
             printf %b "Não encontrada.\n"
             wget -v $2/$dep -O "$1/$dep"
+            # Encerra se não conseguir fazer o download do arquivo
+            if [[ $? -ne 0 ]]; then
+                rm -rf "$1/$dep"
+                exit 1
+            fi
         fi
         # Inclui a dependência no chamador
         source "$1/$dep"
