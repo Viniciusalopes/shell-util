@@ -106,7 +106,7 @@ require()
                 printf %b ">> Faça o download em:\n   ${3}\n"
                 printf %b ">> e salve o arquivo no diretório:\n   '${1}/'.\n"
             fi
-            exit 1
+            return 1
         else
             # Exibe a lista de arquivos encontrados com o nome
             ls $2
@@ -118,7 +118,7 @@ require()
 >> Opções: require [caminho] [arquivo]
            require [caminho] [arquivo] [link para download]
 EOF
-    exit 1
+    return 1
     fi
 }
 
@@ -127,10 +127,12 @@ EOF
 # $sources() deve ser declarado antes pelo chamador, de forma global
 # $1 = Diretório para dependências
 # $2 = Caminho para download das dependências
+# $3 = Texto de aviso de execução da função (Ex.: Verificando dependências...\n)
 
 get_sources()
 {
-    printf %b "Verificando dependências...\n"
+    # Imprime mensagemde aviso de execução passada pelo argumento $3
+    printf %b "$3"
 
     # Cria o diretório para dependências
     if ! [[ -d $1 ]]; then
@@ -148,7 +150,6 @@ get_sources()
         fi
         # Inclui a dependência no chamador
         source "$1/$dep"
-        printf %b "\n"
     done
 }
 #--------------------------------- FIM-FUNÇÕES --------------------------------<
