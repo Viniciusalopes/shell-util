@@ -106,7 +106,7 @@ require()
                 printf %b ">> Faça o download em:\n   ${3}\n"
                 printf %b ">> e salve o arquivo no diretório:\n   '${1}/'.\n"
             fi
-            return 1
+            exit 1
         else
             # Exibe a lista de arquivos encontrados com o nome
             ls $2
@@ -118,7 +118,7 @@ require()
 >> Opções: require [caminho] [arquivo]
            require [caminho] [arquivo] [link para download]
 EOF
-    return 1
+    exit 1
     fi
 }
 
@@ -132,7 +132,9 @@ EOF
 get_sources()
 {
     # Imprime mensagemde aviso de execução passada pelo argumento $3
-    printf %b "$3"
+    if [[ "$3" -ne "" ]]; then
+        printf %b "$3"
+    fi
 
     # Cria o diretório para dependências
     if ! [[ -d $1 ]]; then
