@@ -26,7 +26,7 @@
 #   1-Respondeu Não ou não respondeu.
 pergunta_sn()
 {
-    read -ep "$1: " -n 1
+    read -ep "${1}: " -n 1
     printf %b "\n"
     case "$REPLY" in
         s|S) return 0 ;;
