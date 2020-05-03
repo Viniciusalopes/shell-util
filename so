@@ -8,7 +8,7 @@
 # PROGRAMA          : so
 # VERSÃO            : 1.0.0
 # LICENÇA           : MIT
-# PEQUENA DESCRIÇÃO : Informações sobre o sistema operacional e afins
+# PEQUENA DESCRIÇÃO : Informações sobre o sistema operacional e afins.
 #
 # CHANGELOG :
 #
@@ -95,7 +95,7 @@ verifica_distro()
 # o nome do arquivo no diretório e exibe link para download.
 # $1 = diretório
 # $2 = nome do arquivo
-# #3 = link para download
+# $3 = instruções para download
 require()
 {
     # Verifica se passou dois ou mais argumentos para a função
@@ -103,8 +103,7 @@ require()
         if [[ $(find $1 -iname $2 | wc -l) -eq 0 ]]; then  # Busca por arquivos com o nome
             printf %b ">> Não foi possível encontrar '${2}': Arquivo inexistente.\n"
             if [[ $# -ge 3 ]]; then
-                printf %b ">> Faça o download em:\n   ${3}\n"
-                printf %b ">> e salve o arquivo no diretório:\n   '${1}/'.\n"
+                printf %b "${3}"
             fi
             exit 1
         else
@@ -131,6 +130,9 @@ EOF
 
 get_sources()
 {
+    # Linha de separação
+    local _linha="--------------------------------------------------------------------------------"
+
     # Imprime mensagemde aviso de execução passada pelo argumento $3
     if [[ "$3" -ne "" ]]; then
         printf %b "$3"
@@ -143,6 +145,7 @@ get_sources()
     
     # Download das dependências
     for dep in "${sources[@]}"; do
+        printf %b "${_linha}\n"
         printf %b "> $1/$dep -> "
         if [[ -f "$1/$dep" ]]; then
             printf %b "OK\n"
