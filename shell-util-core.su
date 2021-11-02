@@ -38,6 +38,8 @@ copyright="© 2021 - Vovolinux"
 # Dependencias de shell_util
 SU_FILE='os.su'
 
+SU_FILES=()
+
 SU_PKG='wget'
 
 SU_LIBS=(
@@ -185,10 +187,10 @@ shell-util-core.grant_FILE()
     source ${SU_TMP}/${SU_FILE}
 }
 
-shell-util-core.get_LIBS()
+shell-util-core.get_FILES()
 {
-    for lib in "${SU_LIBS[@]}"; do
-        SU_FILE=${lib}
+    for f in "${SU_FILES[@]}"; do
+        SU_FILE=${f}
         shell-util-core.grant_FILE
     done
 }
@@ -205,6 +207,7 @@ shell-util-core.get_LIBS()
 
 # Programa começa aqui :)
 
-shell-util-core.grant_TMP
+shell-util-core.grant_TMP /tmp/lalala
 shell-util-core.grant_PKG
-shell-util-core.get_LIBS
+SU_FILES=${SU_LIBS[@]}
+shell-util-core.get_FILES
