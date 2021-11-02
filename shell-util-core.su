@@ -38,15 +38,15 @@ copyright="© 2021 - Vovolinux"
 # Dependencias de shell_util
 SU_FILE='os.su'
 
-SU_FILES=()
-
-SU_PKG='wget'
-
-SU_LIBS=(
+SU_FILES=(
     'menu.su'
     'os.su'
     'text.su'
 )
+
+SU_PKG='wget'
+
+SU_PKGS=()
 
 ### VARIÁVEIS PARA MENSAGENS FIXAS ###
 SU_MSG_NOT_INSTALLED="FAIL!\nPacote não está instalado.\n"
@@ -62,7 +62,7 @@ SU_RAW='https://raw.githubusercontent.com/Viniciusalopes/shell-util/master'
 ### VARIÁVEIS DE DIRETÓRIOS E ARQUIVOS ###
 
 # Diretório temporário para scripts auxiliares e dependências
-SU_TMP='/home/projects/shell-util'
+SU_TMP='/tmp/shell-util'
 
 #------------------------------- FIM-VARIÁVEIS --------------------------------<
 
@@ -78,7 +78,7 @@ shell-util-core.grant_SU_CORE()
     local SU_RAW="https://raw.githubusercontent.com/Viniciusalopes/shell-util/master"
     local SU_MSG_NOT_INSTALLED="FAIL!\nPacote não está instalado.\n"
     local SU_MSG_FAIL_DEP="FAIL!\nDependência não foi satisfeita.\n"
-    local SU_TMP="/home/projects/shell-util"
+    local SU_TMP="/tmp/shell-util"
     local SU_PKG="wget"
     local SU_FILE="shell-util-core.su"
 
@@ -126,21 +126,6 @@ shell-util-core.grant_SU_CORE()
     # }
 }
 
-# Verifica se o programa está instalado
-shell-util-core.grant_PKG()
-{
-    printf %b "grant_PKG '${SU_PKG}' -> "
-    which ${SU_PKG}
-    if [[ $? -ne 0 ]]; then
-        printf %b "${SU_MSG_NOT_INSTALLED}"
-        printf %b "try install dep -> "
-        sudo apt install -y ${SU_PKG}
-        if [[ $? -ne 0 ]]; then
-            printf %b "${SU_MSG_FAIL_DEP}" && exit 1
-        fi
-    fi
-}
-
 # Corrige o path 
 shell-util-core.sanitize_path()
 {
@@ -157,15 +142,38 @@ shell-util-core.sanitize_path()
     printf %b "${_path}"    
 }
 
-# Garante o diretório temporário
-shell-util-core.grant_TMP()
+# Garante o diretório passado no primeiro argumento
+shell-util-core.grant_DIR()
 {
-    [[ "${1}" = "" ]] || SU_TMP=$(shell-util-core.sanitize_path $1)
-    
+    local _dir=$(shell-util-core.sanitize_path $1)
     # Cria o diretório para dependências
-    if ! [[ -d ${SU_TMP} ]]; then
-        mkdir -pv "${SU_TMP}"
+    if ! [[ -d ${_dir} ]]; then
+        mkdir -pv "${_dir}"
     fi
+}
+
+# Verifica se o programa está instalado
+shell-util-core.grant_PKG()
+{
+    printf %b "grant_PKG '${SU_PKG}' -> "
+    which ${SU_PKG}
+    if [[ $? -ne 0 ]]; then
+        printf %b "${SU_MSG_NOT_INSTALLED}"
+        printf %b "try install dep -> "
+        sudo apt install -y ${SU_PKG}
+        if [[ $? -ne 0 ]]; then
+            printf %b "${SU_MSG_FAIL_DEP}" && exit 1
+        fi
+    fi
+}
+
+shell-util-core.get_PKGS()
+{
+    printf %b "${SU_PKGS[@]}\n"
+    for p in "${SU_PKGS[@]}"; do
+        SU_PKG="${p}"
+        shell-util-core.grant_PKG
+    done
 }
 
 # Garante o shell_util.so
@@ -184,7 +192,14 @@ shell-util-core.grant_FILE()
             && exit 1
         fi
     fi
-    source ${SU_TMP}/${SU_FILE}
+}
+
+shell-util-core.get_LIBS() {
+    for f in "${SU_FILES[@]}"; do
+        SU_FILE=${f}
+        shell-util-core.grant_FILE
+        source ${SU_TMP}/${f}
+    done
 }
 
 shell-util-core.get_FILES()
@@ -207,7 +222,6 @@ shell-util-core.get_FILES()
 
 # Programa começa aqui :)
 
-shell-util-core.grant_TMP /tmp/lalala
+shell-util-core.grant_DIR $SU_TMP
 shell-util-core.grant_PKG
-SU_FILES=${SU_LIBS[@]}
-shell-util-core.get_FILES
+shell-util-core.get_LIBS
