@@ -40,13 +40,14 @@ SU_LIB='os.su'
 SU_PKG='wget'
 
 SU_LIBS=(
-    'menu'
-    'text'
+    'menu.su'
+    'os.su.'
+    'text.su'
 )
 
 ### VARIÁVEIS PARA MENSAGENS FIXAS ###
-SU_MSG_NOT_INSTALLED='FAIL!\nPacote não está instalado.\n'
-SU_MSG_FAIL_DEP='FAIL!\nDependência não foi satisfeita.\n'
+SU_MSG_NOT_INSTALLED="FAIL!\nPacote não está instalado.\n"
+SU_MSG_FAIL_DEP="FAIL!\nDependência não foi satisfeita.\n"
 
 
 ### VARIÁVEIS PARA LINKS WEB ###
@@ -71,12 +72,12 @@ SU_TMP='/home/projects/shell-util'
 # Incluir em scripts que utilizarão o shell-util-core
 shell-util-core.grant_SU_CORE()
 {
-    local SU_RAW='https://raw.githubusercontent.com/Viniciusalopes/shell-util/master'
-    local SU_MSG_NOT_INSTALLED='FAIL!\nPacote não está instalado.\n'
-    local SU_MSG_FAIL_DEP='FAIL!\nDependência não foi satisfeita.\n'
-    local SU_TMP='/home/projects/shell-util'
-    local SU_PKG='wget'
-    local SU_LIB='shell-util-core.su'
+    local SU_RAW="https://raw.githubusercontent.com/Viniciusalopes/shell-util/master"
+    local SU_MSG_NOT_INSTALLED="FAIL!\nPacote não está instalado.\n"
+    local SU_MSG_FAIL_DEP="FAIL!\nDependência não foi satisfeita.\n"
+    local SU_TMP="/home/projects/shell-util"
+    local SU_PKG="wget"
+    local SU_LIB="shell-util-core.su"
 
     # Garante o diretório temporário
     # shell-util-core.grant_SU_TMP()
@@ -93,11 +94,11 @@ shell-util-core.grant_SU_CORE()
     printf %b "grant_PKG ${SU_PKG} -> "
     which ${SU_PKG}
     if [[ $? -ne 0 ]]; then
-        printf %b ${SU_MSG_NOT_INSTALLED}
-        printf %b 'try install dep -> '
+        printf %b "${SU_MSG_NOT_INSTALLED}"
+        printf %b "try install dep -> "
         sudo apt install -y ${SU_PKG}
         if [[ $? -ne 0 ]]; then
-            printf %b ${SU_MSG_FAIL_DEP} && exit 1
+            printf %b "${SU_MSG_FAIL_DEP}" && exit 1
         fi
     fi
     # }
@@ -105,15 +106,17 @@ shell-util-core.grant_SU_CORE()
     # Garante o shell_util.so
     # shell-util-core.grant_OS()
     # {
-    printf %b 'grant_LIB -> '
+    printf %b "grant_LIB -> "
     
     if [[ -f "${SU_TMP}/${SU_LIB}" ]]; then
-        printf %b 'OK\n'
+        printf %b "OK\n"
     else
         wget -v ${SU_RAW}/${SU_LIB} -O ${SU_TMP}/${SU_LIB}
         # Encerra se não conseguir fazer o download do arquivo
         if [[ $? -ne 0 ]]; then
-            printf %b $SU_MSG_FAIL_DEP && exit 1
+            printf %b "${SU_MSG_FAIL_DEP}" \
+            && rm -rfv ${SU_TMP}/${SU_LIB} \
+            && exit 1
         fi
     fi
     source ${SU_TMP}/${SU_LIB}
@@ -126,11 +129,11 @@ shell-util-core.grant_PKG()
     printf %b "grant_PKG ${SU_PKG} -> "
     which ${SU_PKG}
     if [[ $? -ne 0 ]]; then
-        printf %b ${SU_MSG_NOT_INSTALLED}
-        printf %b 'try install dep -> '
+        printf %b "${SU_MSG_NOT_INSTALLED}"
+        printf %b "try install dep -> "
         sudo apt install -y ${SU_PKG}
         if [[ $? -ne 0 ]]; then
-            printf %b ${SU_MSG_FAIL_DEP} && exit 1
+            printf %b "${SU_MSG_FAIL_DEP}" && exit 1
         fi
     fi
 }
@@ -147,18 +150,28 @@ shell-util-core.grant_TMP()
 # Garante o shell_util.so
 shell-util-core.grant_LIB()
 {
-    printf %b "grant_LIB ${SU_LIB} -> "
+    printf %b "grant_LIB -> "
     
     if [[ -f "${SU_TMP}/${SU_LIB}" ]]; then
-        printf %b 'OK\n'
+        printf %b "OK\n"
     else
         wget -v ${SU_RAW}/${SU_LIB} -O ${SU_TMP}/${SU_LIB}
         # Encerra se não conseguir fazer o download do arquivo
         if [[ $? -ne 0 ]]; then
-            printf %b $SU_MSG_FAIL_DEP && exit 1
+            printf %b "${SU_MSG_FAIL_DEP}" \
+            && rm -rfv ${SU_TMP}/${SU_LIB} \
+            && exit 1
         fi
     fi
     source ${SU_TMP}/${SU_LIB}
+}
+
+shell-util-core.get_LIBS()
+{
+    for lib in "${SU_LIBS[@]}"; do
+        SU_LIB=${lib}
+        shell-util-core.grant_LIB
+    done
 }
 #--------------------------------- FIM-FUNÇÕES --------------------------------<
 
@@ -175,3 +188,4 @@ shell-util-core.grant_LIB()
 
 shell-util-core.grant_TMP
 shell-util-core.grant_PKG
+shell-util-core.get_LIBS

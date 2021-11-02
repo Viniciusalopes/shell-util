@@ -127,6 +127,10 @@ EOF
 # $1 = Diretório temporário para dependências
 # $2 = URL para download das dependências
 # $3 = Texto de aviso de execução da função (Ex.: Verificando dependências...\n)
+os.get_LIBS()
+{
+
+}
 
 get_sources()
 {
@@ -167,7 +171,7 @@ ${_linha}\n"
             wget -v $2/$dep -O "$1/$dep"
             # Encerra se não conseguir fazer o download do arquivo
             if [[ $? -ne 0 ]]; then
-                rm -rf "$1/$dep"
+                rm -rfv "$1/$dep"
                 exit 1
             fi
         fi
