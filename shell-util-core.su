@@ -147,7 +147,7 @@ shell-util-core.grant_TMP()
 # Garante o shell_util.so
 shell-util-core.grant_LIB()
 {
-    printf %b 'grant_LIB -> '
+    printf %b "grant_LIB ${SU_LIB} -> "
     
     if [[ -f "${SU_TMP}/${SU_LIB}" ]]; then
         printf %b 'OK\n'
