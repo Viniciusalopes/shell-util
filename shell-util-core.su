@@ -36,8 +36,8 @@ ano='2021'
 copyright="© 2021 - Vovolinux"
 
 # Dependencias de shell_util
-SU_LIB=''
-SU_PKG=''
+SU_LIB='os.su'
+SU_PKG='wget'
 
 SU_LIBS=(
     'menu'
@@ -136,7 +136,7 @@ shell-util-core.grant_PKG()
 }
 
 # Garante o diretório temporário
-shell-util-core.grant_SU_TMP()
+shell-util-core.grant_TMP()
 {
     # Cria o diretório para dependências
     if ! [[ -d ${SU_TMP} ]]; then
@@ -145,7 +145,7 @@ shell-util-core.grant_SU_TMP()
 }
 
 # Garante o shell_util.so
-shell-util-core.grant_SU_LIB()
+shell-util-core.grant_LIB()
 {
     printf %b 'grant_LIB -> '
     
@@ -173,5 +173,5 @@ shell-util-core.grant_SU_LIB()
 
 # Programa começa aqui :)
 
-shell-util-core.grant_SU_TMP
-shell-util-core.grant_OS
+shell-util-core.grant_TMP
+shell-util-core.grant_PKG
