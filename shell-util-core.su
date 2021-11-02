@@ -160,7 +160,12 @@ shell-util-core.grant_PKG()
     if [[ $? -ne 0 ]]; then
         printf %b "${SU_MSG_NOT_INSTALLED}"
         printf %b "try install dep -> "
-        sudo apt install -y ${SU_PKG}
+        if [[ "${SU_PKG}" -eq "docker" ]]; then
+            sudo apt install -y docker.io
+        else
+            sudo apt install -y ${SU_PKG}
+        fi
+        
         if [[ $? -ne 0 ]]; then
             printf %b "${SU_MSG_FAIL_DEP}" && exit 1
         fi
