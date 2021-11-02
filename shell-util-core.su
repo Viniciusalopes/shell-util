@@ -36,10 +36,18 @@ ano='2021'
 copyright="© 2021 - Vovolinux"
 
 # Dependencias de shell_util
+SU_LIB=''
+SU_PKG=''
+
 SU_LIBS=(
     'menu'
     'text'
 )
+
+### VARIÁVEIS PARA MENSAGENS FIXAS ###
+SU_MSG_NOT_INSTALLED='FAIL!\nPacote não está instalado.\n'
+SU_MSG_FAIL_DEP='FAIL!\nDependência não foi satisfeita.\n'
+
 
 ### VARIÁVEIS PARA LINKS WEB ###
 
@@ -49,7 +57,7 @@ SU_RAW='https://raw.githubusercontent.com/Viniciusalopes/shell-util/master'
 
 ### VARIÁVEIS DE DIRETÓRIOS E ARQUIVOS ###
 
-# Diretório para scripts auxiliares e dependências
+# Diretório temporário para scripts auxiliares e dependências
 SU_TMP='/home/projects/shell-util'
 
 #------------------------------- FIM-VARIÁVEIS --------------------------------<
@@ -59,29 +67,98 @@ SU_TMP='/home/projects/shell-util'
 #----------------------------------- FUNÇÕES ---------------------------------->
 #
 
+# Importa o shell-util-core e suas dependencias
+# Incluir em scripts que utilizarão o shell-util-core
+shell-util-core.grant_SU_CORE()
+{
+    local SU_RAW='https://raw.githubusercontent.com/Viniciusalopes/shell-util/master'
+    local SU_MSG_NOT_INSTALLED='FAIL!\nPacote não está instalado.\n'
+    local SU_MSG_FAIL_DEP='FAIL!\nDependência não foi satisfeita.\n'
+    local SU_TMP='/home/projects/shell-util'
+    local SU_PKG='wget'
+    local SU_LIB='shell-util-core.su'
+
+    # Garante o diretório temporário
+    # shell-util-core.grant_SU_TMP()
+    # {
+    # Cria o diretório para dependências
+    if ! [[ -d ${SU_TMP} ]]; then
+        mkdir -pv "${SU_TMP}"
+    fi
+    # }
+
+    # Verifica se o programa está instalado
+    # shell-util-core.grant_PKG()
+    # {
+    printf %b "grant_PKG ${SU_PKG} -> "
+    which ${SU_PKG}
+    if [[ $? -ne 0 ]]; then
+        printf %b ${SU_MSG_NOT_INSTALLED}
+        printf %b 'try install dep -> '
+        sudo apt install -y ${SU_PKG}
+        if [[ $? -ne 0 ]]; then
+            printf %b ${SU_MSG_FAIL_DEP} && exit 1
+        fi
+    fi
+    # }
+
+    # Garante o shell_util.so
+    # shell-util-core.grant_OS()
+    # {
+    printf %b 'grant_LIB -> '
+    
+    if [[ -f "${SU_TMP}/${SU_LIB}" ]]; then
+        printf %b 'OK\n'
+    else
+        wget -v ${SU_RAW}/${SU_LIB} -O ${SU_TMP}/${SU_LIB}
+        # Encerra se não conseguir fazer o download do arquivo
+        if [[ $? -ne 0 ]]; then
+            printf %b $SU_MSG_FAIL_DEP && exit 1
+        fi
+    fi
+    source ${SU_TMP}/${SU_LIB}
+    # }
+}
+
+# Verifica se o programa está instalado
+shell-util-core.grant_PKG()
+{
+    printf %b "grant_PKG ${SU_PKG} -> "
+    which ${SU_PKG}
+    if [[ $? -ne 0 ]]; then
+        printf %b ${SU_MSG_NOT_INSTALLED}
+        printf %b 'try install dep -> '
+        sudo apt install -y ${SU_PKG}
+        if [[ $? -ne 0 ]]; then
+            printf %b ${SU_MSG_FAIL_DEP} && exit 1
+        fi
+    fi
+}
+
 # Garante o diretório temporário
-grant_SU_TMP()
+shell-util-core.grant_SU_TMP()
 {
     # Cria o diretório para dependências
     if ! [[ -d ${SU_TMP} ]]; then
         mkdir -pv "${SU_TMP}"
     fi
 }
-# Garante o shell_util.so
 
-grant_OS()
+# Garante o shell_util.so
+shell-util-core.grant_SU_LIB()
 {
-    local _lib='os.su'
-    if [[ -f "${SU_TMP}/${_lib}" ]]; then
-        printf %b "shell_util.os -> OK\n"
+    printf %b 'grant_LIB -> '
+    
+    if [[ -f "${SU_TMP}/${SU_LIB}" ]]; then
+        printf %b 'OK\n'
     else
-        wget -v ${SU_RAW}/${_lib} -O ${SU_TMP}/${_lib}
+        wget -v ${SU_RAW}/${SU_LIB} -O ${SU_TMP}/${SU_LIB}
         # Encerra se não conseguir fazer o download do arquivo
         if [[ $? -ne 0 ]]; then
-            exit 1
+            printf %b $SU_MSG_FAIL_DEP && exit 1
         fi
     fi
-    source ${SU_TMP}/${_lib}
+    source ${SU_TMP}/${SU_LIB}
 }
 #--------------------------------- FIM-FUNÇÕES --------------------------------<
 
@@ -96,5 +173,5 @@ grant_OS()
 
 # Programa começa aqui :)
 
-grant_SU_TMP
-grant_OS
+shell-util-core.grant_SU_TMP
+shell-util-core.grant_OS
