@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+# Template orgulhosamente criado por (Shell-Base)
+
+#-----------HEADER-------------------------------------------------------------|
+# AUTOR             : Vovolinux <suporte@vovolinux.com.br>
+# HOMEPAGE          : https://vovolinux.com.br 
+# DATA DE CRIAÇÃO   : 02/11/2021 às 00:52 
+# PROGRAMA          : shell-util-core
+# VERSÃO            : 1.0.0
+# LICENÇA           : MIT - © 2021 - Vovolinux
+# PEQUENA DESCRIÇÃO : Importa as bibliotecas do shell-util formando um core.
+#
+# CHANGELOG :
+#
+#------------------------------------------------------------------------------|
+
+#--------------------------------- VARIÁVEIS ---------------------------------->
+#
+# Aqui vão todas as váriaveis do programa.
+
+### VARIÁVEIS DO SCRIPT ###
+
+# Autor
+autor='Vovolinux'
+
+# Programa
+programa='shell-util-core'
+
+# Versão
+versao='1.0.0'
+
+# Ano atual
+ano='2021'
+
+# Informação de Copyright
+copyright="© 2021 - Vovolinux"
+
+# Dependencias de shell_util
+SU_LIBS=(
+    'menu'
+    'text'
+)
+
+### VARIÁVEIS PARA LINKS WEB ###
+
+# Caminho para download das bibliotecas auxiliares de shell-util
+SU_RAW='https://raw.githubusercontent.com/Viniciusalopes/shell-util/master'
+
+
+### VARIÁVEIS DE DIRETÓRIOS E ARQUIVOS ###
+
+# Diretório para scripts auxiliares e dependências
+SU_TMP='/home/projects/shell-util'
+
+#------------------------------- FIM-VARIÁVEIS --------------------------------<
+
+
+
+#----------------------------------- FUNÇÕES ---------------------------------->
+#
+
+# Garante o diretório temporário
+grant_SU_TMP()
+{
+    # Cria o diretório para dependências
+    if ! [[ -d ${SU_TMP} ]]; then
+        mkdir -pv "${SU_TMP}"
+    fi
+}
+# Garante o shell_util.so
+
+grant_OS()
+{
+    local _lib='os.su'
+    if [[ -f "${SU_TMP}/${_lib}" ]]; then
+        printf %b "shell_util.os -> OK\n"
+    else
+        wget -v ${SU_RAW}/${_lib} -O ${SU_TMP}/${_lib}
+        # Encerra se não conseguir fazer o download do arquivo
+        if [[ $? -ne 0 ]]; then
+            exit 1
+        fi
+    fi
+    source ${SU_TMP}/${_lib}
+}
+#--------------------------------- FIM-FUNÇÕES --------------------------------<
+
+
+
+#---------------------------------- TESTES ------------------------------------>
+#
+# Testes iniciais do seu programa vão neste bloco.
+
+
+#--------------------------------- FIM-TESTES ---------------------------------<
+
+# Programa começa aqui :)
+
+grant_SU_TMP
+grant_OS
