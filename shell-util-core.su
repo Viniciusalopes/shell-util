@@ -36,13 +36,14 @@ ano='2021'
 copyright="© 2021 - Vovolinux"
 
 # Dependencias de shell_util
-SU_LIB='os.su'
+SU_FILE='os.su'
+
 SU_PKG='wget'
 
 SU_LIBS=(
-    #'menu.su'
-    #'os.su'
-    #'text.su'
+    'menu.su'
+    'os.su'
+    'text.su'
 )
 
 ### VARIÁVEIS PARA MENSAGENS FIXAS ###
@@ -77,7 +78,7 @@ shell-util-core.grant_SU_CORE()
     local SU_MSG_FAIL_DEP="FAIL!\nDependência não foi satisfeita.\n"
     local SU_TMP="/home/projects/shell-util"
     local SU_PKG="wget"
-    local SU_LIB="shell-util-core.su"
+    local SU_FILE="shell-util-core.su"
 
     # Garante o diretório temporário
     # shell-util-core.grant_SU_TMP()
@@ -106,20 +107,20 @@ shell-util-core.grant_SU_CORE()
     # Garante o shell_util.so
     # shell-util-core.grant_OS()
     # {
-    printf %b "grant_LIB '${SU_LIB}' -> "
+    printf %b "grant_FILE '${SU_FILE}' -> "
     
-    if [[ -f "${SU_TMP}/${SU_LIB}" ]]; then
+    if [[ -f "${SU_TMP}/${SU_FILE}" ]]; then
         printf %b "OK\n"
     else
-        wget -v ${SU_RAW}/${SU_LIB} -O ${SU_TMP}/${SU_LIB}
+        wget -v ${SU_RAW}/${SU_FILE} -O ${SU_TMP}/${SU_FILE}
         # Encerra se não conseguir fazer o download do arquivo
         if [[ $? -ne 0 ]]; then
             printf %b "${SU_MSG_FAIL_DEP}" \
-            && rm -rfv ${SU_TMP}/${SU_LIB} \
+            && rm -rfv ${SU_TMP}/${SU_FILE} \
             && exit 1
         fi
     fi
-    source ${SU_TMP}/${SU_LIB}
+    source ${SU_TMP}/${SU_FILE}
     # }
 }
 
@@ -138,9 +139,27 @@ shell-util-core.grant_PKG()
     fi
 }
 
+# Corrige o path 
+shell-util-core.sanitize_path()
+{
+    local _path=$1
+    # Se não informar o diretório
+    [[ "${_path}" = "" ]] && _path="$PWD"
+
+    # Substitui o ~ (til) pelo endereço absoluto da home do usuário
+    [[ "${_path:0:2}" = "~/" ]] && _path="${HOME}${_path: 1}" 
+
+    # Retira a barra do final
+    [[ "${_path: -1}" = "/" ]] && _path="${_path::-1}" 
+
+    printf %b "${_path}"    
+}
+
 # Garante o diretório temporário
 shell-util-core.grant_TMP()
 {
+    [[ "${1}" = "" ]] || SU_TMP=$(shell-util-core.sanitize_path $1)
+    
     # Cria o diretório para dependências
     if ! [[ -d ${SU_TMP} ]]; then
         mkdir -pv "${SU_TMP}"
@@ -148,29 +167,29 @@ shell-util-core.grant_TMP()
 }
 
 # Garante o shell_util.so
-shell-util-core.grant_LIB()
+shell-util-core.grant_FILE()
 {
-    printf %b "grant_LIB '${SU_LIB}' -> "
+    printf %b "grant_FILE '${SU_FILE}' -> "
     
-    if [[ -f "${SU_TMP}/${SU_LIB}" ]]; then
+    if [[ -f "${SU_TMP}/${SU_FILE}" ]]; then
         printf %b "OK\n"
     else
-        wget -v ${SU_RAW}/${SU_LIB} -O ${SU_TMP}/${SU_LIB}
+        wget -v ${SU_RAW}/${SU_FILE} -O ${SU_TMP}/${SU_FILE}
         # Encerra se não conseguir fazer o download do arquivo
         if [[ $? -ne 0 ]]; then
             printf %b "${SU_MSG_FAIL_DEP}" \
-            && rm -rfv ${SU_TMP}/${SU_LIB} \
+            && rm -rfv ${SU_TMP}/${SU_FILE} \
             && exit 1
         fi
     fi
-    source ${SU_TMP}/${SU_LIB}
+    source ${SU_TMP}/${SU_FILE}
 }
 
 shell-util-core.get_LIBS()
 {
     for lib in "${SU_LIBS[@]}"; do
-        SU_LIB=${lib}
-        shell-util-core.grant_LIB
+        SU_FILE=${lib}
+        shell-util-core.grant_FILE
     done
 }
 #--------------------------------- FIM-FUNÇÕES --------------------------------<
