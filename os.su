@@ -185,7 +185,7 @@ ${_linha}\n"
 require_package() 
 {
     which ${1}
-    if [[ $? -eq 0 ]]; then{
+    if [[ $? -eq 0 ]]; then
         printf %b "${1} está instalado.\n"
     else
         echo -e "${1} não está instalado.\n"
