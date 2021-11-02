@@ -40,9 +40,9 @@ SU_LIB='os.su'
 SU_PKG='wget'
 
 SU_LIBS=(
-    'menu.su'
-    'os.su'
-    'text.su'
+    #'menu.su'
+    #'os.su'
+    #'text.su'
 )
 
 ### VARIÁVEIS PARA MENSAGENS FIXAS ###
@@ -126,7 +126,7 @@ shell-util-core.grant_SU_CORE()
 # Verifica se o programa está instalado
 shell-util-core.grant_PKG()
 {
-    printf %b "git  '${SU_PKG}' -> "
+    printf %b "grant_PKG '${SU_PKG}' -> "
     which ${SU_PKG}
     if [[ $? -ne 0 ]]; then
         printf %b "${SU_MSG_NOT_INSTALLED}"
