@@ -162,4 +162,27 @@ get_sources()
         source "$1/$dep"
     done
 }
+
+# Verifica dependências de softwares ou pacotes do SO e instala conforme o que 
+# foi passado como argumento pelo chamador
+# $1 = Software / Pacote
+# $2 = Ação: INSTALL=instala
+# $3 = Extensão (deb)
+
+require_package() 
+{
+    which ${1}
+    if [[ $? -eq 0 ]]; then{
+        printf %b "${1} está instalado.\n"
+    else
+        echo -e "${1} não está instalado.\n"
+        if [[ $2 -e "INSTALL" ]]; then
+            case "$3" in
+                deb|DEB) sudo apt install -y ${1} ;;
+                *) printf %b "Não foi possível instalar o ${1}.\n" && exit 1 ;;
+            esac
+            exit 0
+        fi
+    fi
+}
 #--------------------------------- FIM-FUNÇÕES --------------------------------<
