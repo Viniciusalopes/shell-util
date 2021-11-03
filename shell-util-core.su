@@ -143,12 +143,17 @@ shell-util-core.sanitize_path()
 }
 
 # Garante o diretório passado no primeiro argumento
+# $1=Path do diretório
+# $2=sudo
+# $2=Proprietário e Grupo
 shell-util-core.grant_DIR()
 {
     local _dir=$(shell-util-core.sanitize_path $1)
-    # Cria o diretório para dependências
     if ! [[ -d ${_dir} ]]; then
-        mkdir -pv "${_dir}"
+        $2 mkdir -pv "${_dir}"
+        if ! [[ "${3}" = "" && -d "${_dir}" ]]; then
+            sudo chown $3:$3 ${_dir} -Rf
+        fi
     fi
 }
 
@@ -161,7 +166,7 @@ shell-util-core.grant_PKG()
         printf %b "${SU_MSG_NOT_INSTALLED}"
         printf %b "try install dep -> "
         if [[ "${SU_PKG}" -eq "docker" ]]; then
-            sudo apt install -y docker.io
+            sudo apt install -y docker.io docker-compose
         else
             sudo apt install -y ${SU_PKG}
         fi
