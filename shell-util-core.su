@@ -179,7 +179,6 @@ shell-util-core.grant_PKG()
 
 shell-util-core.get_PKGS()
 {
-    printf %b "${SU_PKGS[@]}\n"
     for p in "${SU_PKGS[@]}"; do
         SU_PKG="${p}"
         shell-util-core.grant_PKG
