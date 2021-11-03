@@ -14,62 +14,26 @@
 #
 #------------------------------------------------------------------------------|
 
+
 #--------------------------------- VARIÁVEIS ---------------------------------->
 #
-# Aqui vão todas as váriaveis do programa.
-
-### VARIÁVEIS DO SCRIPT ###
-
-# Autor
-autor='Vovolinux'
-
-# Programa
-programa='shell-util-core'
-
-# Versão
-versao='1.0.0'
-
-# Ano atual
-ano='2021'
-
-# Informação de Copyright
-copyright="© 2021 - Vovolinux"
-
-# Dependencias de shell_util
-SU_FILE='os.su'
-
-SU_FILES=(
-    'menu.su'
-    'os.su'
-    'text.su'
-)
-
-SU_PKG='wget'
-
-SU_PKGS=()
-
-### VARIÁVEIS PARA MENSAGENS FIXAS ###
-SU_MSG_NOT_INSTALLED="FAIL!\nPacote não está instalado.\n"
-SU_MSG_FAIL_DEP="FAIL!\nDependência não foi satisfeita.\n"
-
-
-### VARIÁVEIS PARA LINKS WEB ###
-
-# Caminho para download das bibliotecas auxiliares de shell-util
-SU_RAW='https://raw.githubusercontent.com/Viniciusalopes/shell-util/master'
-
-
-### VARIÁVEIS DE DIRETÓRIOS E ARQUIVOS ###
-
-# Diretório temporário para scripts auxiliares e dependências
-SU_TMP='/tmp/shell-util'
-
+CFG="shell-util-core.cfg"
 #------------------------------- FIM-VARIÁVEIS --------------------------------<
-
 
 
 #----------------------------------- FUNÇÕES ---------------------------------->
 #
+
+# Verifica se o arquivo de configurações está no mesmo diretório
+shell-util-core.grant_CFG(){
+    [[ "${1}" = "" ]] && local _cfg="${CFG}" || local _cfg="${1}";
+    if [[ -f "${_cfg}" ]]; then
+        source $_cfg
+    else
+        printf %b "${SU_MSG_FILE_NOT_FOUND} (${_cfg}).\n"
+        exit 1
+    fi
+}
 
 # Importa o shell-util-core e suas dependencias
 # Incluir em scripts que utilizarão o shell-util-core
@@ -82,18 +46,12 @@ shell-util-core.grant_SU_CORE()
     local SU_PKG="wget"
     local SU_FILE="shell-util-core.su"
 
-    # Garante o diretório temporário
-    # shell-util-core.grant_SU_TMP()
-    # {
     # Cria o diretório para dependências
     if ! [[ -d ${SU_TMP} ]]; then
         mkdir -pv "${SU_TMP}"
     fi
-    # }
-
+   
     # Verifica se o programa está instalado
-    # shell-util-core.grant_PKG()
-    # {
     printf %b "grant_PKG '${SU_PKG}' -> "
     which ${SU_PKG}
     if [[ $? -ne 0 ]]; then
@@ -104,11 +62,8 @@ shell-util-core.grant_SU_CORE()
             printf %b "${SU_MSG_FAIL_DEP}" && exit 1
         fi
     fi
-    # }
 
     # Garante o shell_util.so
-    # shell-util-core.grant_OS()
-    # {
     printf %b "grant_FILE '${SU_FILE}' -> "
     
     if [[ -f "${SU_TMP}/${SU_FILE}" ]]; then
@@ -123,7 +78,6 @@ shell-util-core.grant_SU_CORE()
         fi
     fi
     source ${SU_TMP}/${SU_FILE}
-    # }
 }
 
 # Corrige o path 
@@ -221,13 +175,12 @@ shell-util-core.get_FILES()
 #--------------------------------- FIM-FUNÇÕES --------------------------------<
 
 
-
 #---------------------------------- TESTES ------------------------------------>
 #
-# Testes iniciais do seu programa vão neste bloco.
-
+shell-util-core.grant_CFG ${CFG}
 
 #--------------------------------- FIM-TESTES ---------------------------------<
+
 
 # Programa começa aqui :)
 
