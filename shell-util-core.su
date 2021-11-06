@@ -40,7 +40,7 @@ shell-util-core.grant_CFG(){
 shell-util-core.grant_SU_CORE()
 {
     local SU_RAW="https://raw.githubusercontent.com/Viniciusalopes/shell-util/master"
-    local SU_MSG_NOT_INSTALLED="FAIL!\nPacote não está instalado.\n"
+    local SU_MSG_FAIL_NOT_INSTALLED="FAIL!\nPacote não está instalado.\n"
     local SU_MSG_FAIL_DEP="FAIL!\nDependência não foi satisfeita.\n"
     local SU_TMP="/tmp/shell-util"
     local SU_PKG="wget"
@@ -55,8 +55,8 @@ shell-util-core.grant_SU_CORE()
     printf %b "grant_PKG '${SU_PKG}' -> "
     which ${SU_PKG}
     if [[ $? -ne 0 ]]; then
-        printf %b "${SU_MSG_NOT_INSTALLED}"
-        printf %b "try install dep -> "
+        printf %b "${SU_MSG_FAIL_NOT_INSTALLED}"
+        printf %b "${SU_TRY_INSTALL_DEP} -> "
         sudo apt install -y ${SU_PKG}
         if [[ $? -ne 0 ]]; then
             printf %b "${SU_MSG_FAIL_DEP}" && exit 1
@@ -117,7 +117,7 @@ shell-util-core.grant_PKG()
     printf %b "grant_PKG '${SU_PKG}' -> "
     which ${SU_PKG}
     if [[ $? -ne 0 ]]; then
-        printf %b "${SU_MSG_NOT_INSTALLED}"
+        printf %b "${SU_MSG_FAIL_NOT_INSTALLED}"
         printf %b "try install dep -> "
         if [[ "${SU_PKG}" -eq "docker" ]]; then
             sudo apt install -y docker.io docker-compose
@@ -171,6 +171,23 @@ shell-util-core.get_FILES()
         SU_FILE=${f}
         shell-util-core.grant_FILE
     done
+}
+
+shell-util-core.create_FILE()
+{
+    printf %b "create_FILE '${1}' -> "
+    if [[ "${1}" = "" ]]; then
+        printf %b "${SU_MSG_NOT_ARG_FILENAME}"
+    else
+        local _file="${1}"
+        local _filename=$(printf "${_file}" | rev | cut -d '/' -f 1 | rev)
+        local _filepath=$(printf "${_file}" | sed "s,$_filename,,g")
+        local _fullpath="${_filepath}${_filename}"
+        
+        mkdir -pv "${_filepath}" \
+        && touch "${_fullpath}" \
+        && ls -al "${_fullpath}" 
+    fi
 }
 #--------------------------------- FIM-FUNÇÕES --------------------------------<
 
