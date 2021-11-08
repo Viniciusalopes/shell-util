@@ -25,7 +25,8 @@ CFG="shell-util-core.cfg"
 #
 
 # Verifica se o arquivo de configurações está no mesmo diretório
-shell-util-core.grant_CFG(){
+shell-util-core.grant_CFG()
+{
     [[ "${1}" = "" ]] && local _cfg="${CFG}" || local _cfg="${1}";
     if [[ -f "${_cfg}" ]]; then
         source $_cfg
@@ -183,7 +184,7 @@ shell-util-core.create_FILE()
         local _filename=$(printf "${_file}" | rev | cut -d '/' -f 1 | rev)
         local _filepath=$(printf "${_file}" | sed "s,$_filename,,g")
         local _fullpath="${_filepath}${_filename}"
-        
+
         mkdir -pv "${_filepath}" \
         && touch "${_fullpath}" \
         && ls -al "${_fullpath}" 
@@ -197,7 +198,7 @@ shell-util-core.create_FILE()
 shell-util-core.grant_CFG ${CFG}
 
 #--------------------------------- FIM-TESTES ---------------------------------<
-
+        
 
 # Programa começa aqui :)
 
