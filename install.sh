@@ -75,3 +75,7 @@ else
         && exit 1
     fi
 fi
+
+cd "${SU_TMP}" \
+&& source "${SU_TMP}/${SU_FILE}" \
+&& cd -
