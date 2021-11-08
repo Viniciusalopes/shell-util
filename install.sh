@@ -60,6 +60,10 @@ if [[ $? -ne 0 ]]; then
     fi
 fi
 
+# removing older versions
+rm -rfv "${SU_TMP}/${SU_FILE}" \
+&& rm -rfv "${SU_TMP}/${SU_CFG}"
+
 # shell-util-core download
 printf %b "Downloading '${SU_FILE} and ${SU_CFG}' -> "
 
