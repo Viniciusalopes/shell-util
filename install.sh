@@ -79,3 +79,4 @@ fi
 cd "${SU_TMP}" \
 && source "${SU_TMP}/${SU_FILE}" \
 && cd -
+printf %b 'shell-util instalation finished.\n'
