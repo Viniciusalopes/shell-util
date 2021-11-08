@@ -76,6 +76,7 @@ else
     fi
 fi
 
+rm -rfv "${SU_TMP}/${SU_FILE}"
 cd "${SU_TMP}"
 source "${SU_TMP}/${SU_FILE}"
 cd -
