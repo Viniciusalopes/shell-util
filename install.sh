@@ -44,7 +44,7 @@ SU_CFG="shell-util-core.cfg"
 
 # Create directory for dependencies
 if ! [[ -d "${SU_TMP}" ]]; then
-    sudo mkdir -pv "${SU_TMP}"
+    sudo mkdir -pv "${SU_TMP}" \
     && sudo chown $USER:$USER ${SU_TMP} -Rfv
 fi
 
