@@ -136,7 +136,7 @@ shell-util-core.create_FILE()
 {
     printf %b "create_FILE '${1}' -> "
     if [[ "${1}" = "" ]]; then
-        printf %b "${SU_MSG_NOT_ARG_FILENAME}"
+        printf %b "${SU_MSG_FAIL_NOT_ARG_FILENAME}"
     else
         local _file="${1}"
         local _filename=$(printf "${_file}" | rev | cut -d '/' -f 1 | rev)
