@@ -17,7 +17,8 @@
 
 #--------------------------------- VARIÁVEIS ---------------------------------->
 #
-CFG="shell-util-core.cfg"
+SU_TMP='/tmp/shell-util'
+SU_CFG="shell-util-core.cfg"
 #------------------------------- FIM-VARIÁVEIS --------------------------------<
 
 
@@ -27,7 +28,7 @@ CFG="shell-util-core.cfg"
 # Verifica se o arquivo de configurações está no mesmo diretório
 shell-util-core.grant_CFG()
 {
-    [[ "${1}" = "" ]] && local _cfg="${CFG}" || local _cfg="${1}";
+    [[ "${1}" = "" ]] && local _cfg="${SU_TMP}/${SU_CFG}" || local _cfg="${1}";
     if [[ -f "${_cfg}" ]]; then
         source $_cfg
     else
@@ -150,13 +151,12 @@ shell-util-core.create_FILE()
 
 #---------------------------------- TESTES ------------------------------------>
 #
-shell-util-core.grant_CFG ${CFG}
+shell-util-core.grant_DIR $SU_TMP
+shell-util-core.grant_CFG "${SU_TMP}/${SU_CFG}"
 
 #--------------------------------- FIM-TESTES ---------------------------------<
-        
 
 # Programa começa aqui :)
 
-shell-util-core.grant_DIR $SU_TMP
 shell-util-core.grant_PKG
 shell-util-core.get_LIBS
