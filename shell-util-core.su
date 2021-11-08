@@ -36,51 +36,6 @@ shell-util-core.grant_CFG()
     fi
 }
 
-# Importa o shell-util-core e suas dependencias
-# Incluir em scripts que utilizarão o shell-util-core
-shell-util-core.grant_SU_CORE()
-{
-    local SU_RAW="https://raw.githubusercontent.com/Viniciusalopes/shell-util/master"
-    local SU_MSG_FAIL_NOT_INSTALLED="FAIL!\nPacote não está instalado.\n"
-    local SU_MSG_FAIL_DEP="FAIL!\nDependência não foi satisfeita.\n"
-    local SU_TMP="/tmp/shell-util"
-    local SU_PKG="wget"
-    local SU_FILE="shell-util-core.su"
-
-    # Cria o diretório para dependências
-    if ! [[ -d ${SU_TMP} ]]; then
-        mkdir -pv "${SU_TMP}"
-    fi
-   
-    # Verifica se o programa está instalado
-    printf %b "grant_PKG '${SU_PKG}' -> "
-    which ${SU_PKG}
-    if [[ $? -ne 0 ]]; then
-        printf %b "${SU_MSG_FAIL_NOT_INSTALLED}"
-        printf %b "${SU_TRY_INSTALL_DEP} -> "
-        sudo apt install -y ${SU_PKG}
-        if [[ $? -ne 0 ]]; then
-            printf %b "${SU_MSG_FAIL_DEP}" && exit 1
-        fi
-    fi
-
-    # Garante o shell_util.so
-    printf %b "grant_FILE '${SU_FILE}' -> "
-    
-    if [[ -f "${SU_TMP}/${SU_FILE}" ]]; then
-        printf %b "OK\n"
-    else
-        wget -v ${SU_RAW}/${SU_FILE} -O ${SU_TMP}/${SU_FILE}
-        # Encerra se não conseguir fazer o download do arquivo
-        if [[ $? -ne 0 ]]; then
-            printf %b "${SU_MSG_FAIL_DEP}" \
-            && rm -rfv ${SU_TMP}/${SU_FILE} \
-            && exit 1
-        fi
-    fi
-    source ${SU_TMP}/${SU_FILE}
-}
-
 # Corrige o path 
 shell-util-core.sanitize_path()
 {
