@@ -28,6 +28,7 @@ SU_CFG="shell-util-core.cfg"
 # Verifica se o arquivo de configurações está no mesmo diretório
 shell-util-core.grant_CFG()
 {
+    printf %b "grant_CFG -> "
     [[ "${1}" = "" ]] && local _cfg="${SU_TMP}/${SU_CFG}" || local _cfg="${1}";
     if [[ -f "${_cfg}" ]]; then
         source $_cfg
@@ -59,6 +60,7 @@ shell-util-core.sanitize_path()
 # $2=Proprietário e Grupo
 shell-util-core.grant_DIR()
 {
+    printf %b "grant_DIR -> "
     local _dir=$(shell-util-core.sanitize_path $1)
     if ! [[ -d ${_dir} ]]; then
         $2 mkdir -pv "${_dir}"
