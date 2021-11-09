@@ -22,7 +22,6 @@ SU_RAW="https://raw.githubusercontent.com/Viniciusalopes/shell-util/master"
 SU_TMP="/tmp/shell-util"
 SU_FILE="shell-util-core.su"
 SU_CFG="shell-util-core.cfg"
-CURRENT_DIR=$PWD
 #------------------------------- FIM-VARIÁVEIS --------------------------------<
 
 
@@ -82,5 +81,5 @@ fi
 
 cd "${SU_TMP}"
 source "${SU_TMP}/${SU_FILE}"
-cd ${CURRENT_DIR}
+cd -
 printf %b 'shell-util instalation finished.\n'
