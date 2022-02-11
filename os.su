@@ -18,7 +18,7 @@
 #--------------------------------- VARIÁVEIS ---------------------------------->
 
 # Dependências e scripts auxiliares, para a função 'get_sources()'
-# $sources() deve ser declarado antes pelo chamador, de forma global
+# $sources() deve ser atribuído antes pelo chamador, de forma global
 sources=()
 
 #------------------------------- FIM-VARIÁVEIS --------------------------------<
@@ -52,7 +52,7 @@ get_distro()
 }
 
 # Verifica se o script já foi testado na distro atual.
-# $distros() deve ser declarado antes pelo chamador, de forma global
+# $distros() deve ser atribuído antes pelo chamador, de forma global
 # $1 = Local da dependencia shell-util/menu
 # $REPLY=sS, continua.
 # $REPLY=nN ou inválido, encerra o chamador.
@@ -123,7 +123,7 @@ EOF
 
 # Verifica dependências e faz o download caso não existam
 # Em seguida inclui a dependência no script atual com o 'source "$dep"'
-# O array $sources deve ser declarado antes pelo chamador, de forma global
+# O array $sources deve ser atribuído antes pelo chamador, de forma global
 # $1 = Diretório temporário para dependências
 # $2 = URL para download das dependências
 # $3 = Texto de aviso de execução da função (Ex.: Verificando dependências...\n)

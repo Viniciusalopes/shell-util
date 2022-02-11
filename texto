@@ -18,7 +18,7 @@
 #--------------------------------- VARIÁVEIS ---------------------------------->
 
 # Array de opções para busca em 'array_contem()'
-# $array() deve ser declarado antes pelo chamador, de forma global
+# $array() deve ser atribuído antes pelo chamador, de forma global
 array=()
 
 #------------------------------- FIM-VARIÁVEIS --------------------------------<
@@ -138,7 +138,7 @@ substitui_no_final()
 #----------------------------------- ARRAYS ----------------------------------->
 
 # Verifica se o array contém o texto procurado
-# $array() deve ser declarado antes pelo chamador, de forma global
+# $array() deve ser atribuído antes pelo chamador, de forma global
 # $1 = Texto procurado
 # Retorno: 0 = encontrou; 1 = não econtrou
 array_contem()
